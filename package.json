@@ -3,13 +3,22 @@
   "version": "1.0.0",
   "description": "MERN Shopping cart app with payment integration",
   "main": "server.js",
+  "type": "module",
   "scripts": {
-    "start": "node backend/server"
+    "start": "node backend/server",
+    "server": "nodemon backend/server",
+    "client": "npm start --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "Lucifer",
   "license": "MIT",
   "dependencies": {
     "axois": "^0.0.1-security",
+    "dotenv": "^16.4.5",
     "express": "^4.21.1"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.1",
+    "nodemon": "^3.1.7"
   }
 }
