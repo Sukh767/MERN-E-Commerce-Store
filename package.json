@@ -4,11 +4,12 @@
   "description": "MERN Shopping cart app with payment integration",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node backend/server"
   },
   "author": "Lucifer",
   "license": "MIT",
   "dependencies": {
+    "axois": "^0.0.1-security",
     "express": "^4.21.1"
   }
 }

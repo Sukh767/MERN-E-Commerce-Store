@@ -1,11 +1,30 @@
-import React from 'react'
-import  products from '../products'
+import React,{useState,useEffect} from 'react'
 import { Col, Row } from 'react-bootstrap'
 import Product from '../component/Product'
+import axios from 'axios';
+
 
 
 
 const HomeScreen = () => {
+
+{
+  /*fetch products from data base
+  useEffects - > a useeffect hook make request to backend, what ever in useEffect, its run as soon as the component load.
+  */
+}
+  const [products, setProducts] = useState([])
+
+  useEffect(()=>{
+    const fetchProducts = async () => {
+      const { data } = await axios.get('/api/products')
+
+      setProducts(data)
+    }
+    fetchProducts()
+  },[])
+
+
   return (
     <>
         <h1>Latest Products</h1>
