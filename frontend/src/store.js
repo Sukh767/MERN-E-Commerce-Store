@@ -2,11 +2,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { thunk } from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
+import { productListReducers } from "./reducers/productReducers";
 
 // Example reducers (you should replace these with your actual reducers)
 
 // Combine your reducers here
-const reducer = {};
+const reducer = {
+  productList: productListReducers,
+};
 
 // Initial state (can be an empty object or populated as needed)
 const initialState = {};
