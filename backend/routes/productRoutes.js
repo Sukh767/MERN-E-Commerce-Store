@@ -1,5 +1,6 @@
 import express from "express";
 import asyncHandler from "express-async-handler";
+import mongoose from "mongoose";
 const router = express.Router();
 import Product from "../models/productModel.js";
 
@@ -14,18 +15,24 @@ router.get(
   })
 );
 
-// @description Fetch single products
+// @description Fetch single product
 // @route GET /api/products/:id
 // @access Public
 router.get(
   "/:id",
   asyncHandler(async (req, res) => {
+    // Validate if the id is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
     const product = await Product.findById(req.params.id);
 
     if (product) {
       res.json(product);
     } else {
-      res.status(404).json({ message: "Product not found" });
+      res.status(404);
+      throw new Error("Product not found");
     }
   })
 );
