@@ -8,9 +8,6 @@ import {
 } from './reducers/productReducers';
 import { cartReducer } from './reducers/cartReducers';
 
-// Example reducers (you should replace these with your actual reducers)
-
-// Combine your reducers here
 const reducer = {
   productList: productListReducers,
   productDetails: productdetailsReducers,
@@ -20,21 +17,18 @@ const reducer = {
 const cartItemsFromStorage = localStorage.getItem('cartItems')
   ? JSON.parse(localStorage.getItem('cartItems'))
   : [];
-// Initial state (can be an empty object or populated as needed)
+
 const initialState = {
-  cart: { cartItems: 'hello' },
+  cart: { cartItems: cartItemsFromStorage },
 };
 
-// Middleware setup (thunk is included by default in configureStore)
-const middleware = [thunk];
+// const middleware = [thunk];
 
 // Configure the store
 const store = configureStore({
   reducer,
-  initialState,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(middleware),
-  devTools: composeWithDevTools(), // You can optionally enable devtools
+  preloadedState: initialState, // use preloadedState for initial values
+  devTools: process.env.NODE_ENV !== 'production',
 });
 
 export default store;

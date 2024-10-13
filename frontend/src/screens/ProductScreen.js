@@ -20,7 +20,7 @@ const ProductScreen = ({ history }) => {
   const { id } = useParams(); // Get the product ID from the URL
   const navigate = useNavigate();
 
-  const [qty, setQty] = useState(0);
+  const [qty, setQty] = useState(1);
 
   const dispatch = useDispatch();
   const productDetails = useSelector((state) => state.productDetails);
