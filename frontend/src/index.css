@@ -19,3 +19,8 @@ h2{
   font-size: 1.4rem;
   padding: 0.5rem 0;
 }
+
+.primary:hover {
+  background-color: #3f3f3f; /* Darker shade for the hover effect */
+  border-color: #1d1d1d;
+}

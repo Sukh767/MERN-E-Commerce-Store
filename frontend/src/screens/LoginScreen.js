@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link, redirect, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
@@ -8,39 +8,36 @@ import FormContainer from '../components/FormContainer';
 import { login } from '../actions/userActions';
 
 const LoginScreen = () => {
-
   const location = useLocation();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const userLogin = useSelector(state => state.userLogin)
-  const { loading, error, userInfo} = userLogin
+  const userLogin = useSelector((state) => state.userLogin);
+  const { loading, error, userInfo } = userLogin;
 
-  // const redirect = new URLSearchParams(location.search ? location.search.split('=')[1] : '/')
-  const redirect = location.search ? location.search.split('=')[1] : '/'
+  const redirect = location.search ? location.search.split('=')[1] : '/';
 
-
-  useEffect(()=>{
-    if(userInfo){
-      navigate(redirect)
+  useEffect(() => {
+    if (userInfo) {
+      navigate(redirect);
     }
-  },[navigate, userInfo, redirect])
+  }, [navigate, userInfo, redirect]);
 
-  const submitHandler = (e) =>{
-    e.preventDefault()
-    dispatch(login(email,password))
-  }
+  const submitHandler = (e) => {
+    e.preventDefault();
+    dispatch(login(email, password));
+  };
 
   return (
     <FormContainer>
       <h1>Sign In</h1>
       {error && <Message variant='danger'>{error}</Message>}
-      {loading && <Loader/>}
+      {loading && <Loader />}
       <Form onSubmit={submitHandler}>
-        <Form.Group controlId="email">
+        <Form.Group controlId="email" className="mb-3">
           <Form.Label>Email Address</Form.Label>
           <Form.Control
             type="email"
@@ -50,7 +47,7 @@ const LoginScreen = () => {
           ></Form.Control>
         </Form.Group>
 
-        <Form.Group controlId="password">
+        <Form.Group controlId="password" className="mb-4">
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
@@ -60,7 +57,16 @@ const LoginScreen = () => {
           ></Form.Control>
         </Form.Group>
 
-        <Button type='submit' className='primary'>
+        <Button
+          type="submit"
+          className="primary"
+          style={{
+            width: '100%',
+            padding: '10px',
+            marginTop: '10px',
+            marginBottom: '15px',
+          }}
+        >
           Sign In
         </Button>
       </Form>
