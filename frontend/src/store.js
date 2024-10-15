@@ -1,6 +1,7 @@
 // src/store.js
 import { configureStore } from '@reduxjs/toolkit';
 // import { thunk } from 'redux-thunk';
+// eslint-disable-next-line
 import { composeWithDevTools } from 'redux-devtools-extension';
 import {
   productListReducers,
@@ -8,6 +9,7 @@ import {
 } from './reducers/productReducers';
 import { cartReducer } from './reducers/cartReducers';
 import { userDetailsReducers, userLoginReducers, userRegisterReducers, userUpdateProfileReducers } from './reducers/userReducers';
+import { orderCreateReducers } from './reducers/orderReducers';
 
 const reducer = {
   productList: productListReducers,
@@ -17,6 +19,7 @@ const reducer = {
   userRegister: userRegisterReducers,
   userDetails: userDetailsReducers,
   userUpdateProfile: userUpdateProfileReducers,
+  orderCreate: orderCreateReducers,
 };
 
 const cartItemsFromStorage = localStorage.getItem('cartItems')

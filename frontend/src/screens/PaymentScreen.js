@@ -7,6 +7,9 @@ import { savePaymentMethod } from '../actions/cartActions';
 import CheckoutSteps from '../components/CheckoutSteps';
 
 const ShippingScreen = () => {
+
+  const navigate = useNavigate()
+
   const cart = useSelector((state) => state.cart);
   const { shippingAddress } = cart;
 
@@ -14,7 +17,6 @@ const ShippingScreen = () => {
     navigate('/shipping');
   }
 
-  const navigate = useNavigate();
   const [paymentMethod, setPaymentMethod] = useState('PayPal'); //Default payment method PayPal
 
   const dispatch = useDispatch();
