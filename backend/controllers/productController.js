@@ -3,18 +3,18 @@ import mongoose from "mongoose";
 import Product from "../models/productModel.js";
 
 
-// @description Fetch all products
-// @route GET /api/products
-// @access Public
+// @description        Fetch all products
+// @route              GET/api/products
+// @access             Public
 const getProducts = asyncHandler(async (req,res) => {
   const products = await Product.find({})
 
   res.json(products)
 })
 
-// @description Fetch single product
-// @route GET /api/products/:id
-// @access Public
+// @description       Fetch single product
+// @route             GET /api/products/:id
+// @access            Public
 const getProductById = asyncHandler(async (req,res) => {
       // Validate if the id is a valid ObjectId
       if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
