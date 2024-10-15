@@ -7,13 +7,14 @@ import {
   productdetailsReducers,
 } from './reducers/productReducers';
 import { cartReducer } from './reducers/cartReducers';
-import { userLoginReducers } from './reducers/userReducers';
+import { userLoginReducers, userRegisterReducers } from './reducers/userReducers';
 
 const reducer = {
   productList: productListReducers,
   productDetails: productdetailsReducers,
   cart: cartReducer,
   userLogin: userLoginReducers,
+  userRegister: userRegisterReducers
 };
 
 const cartItemsFromStorage = localStorage.getItem('cartItems')
