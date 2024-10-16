@@ -35,15 +35,15 @@ const ProfileScreen = () => {
     if (!userInfo) {
       navigate('/login');
     } else {
-      if ( !user.name ) {
+      if (!user || !user.name) { // Check if user exists
         dispatch(getUserDetails('profile'));
-        dispatch(listMyOrders())
+        dispatch(listMyOrders());
       } else {
         setName(user.name);
         setEmail(user.email);
       }
     }
-  }, [dispatch, navigate, userInfo, user]);
+  }, [dispatch, navigate, userInfo, user]);  
   
 
   const submitHandler = (e) => {
@@ -122,7 +122,7 @@ const ProfileScreen = () => {
       <Table striped bordered hover responsive className='table-sm'>
         <thead>
           <tr>
-            <th>ID</th>
+            <th>ORDER ID</th>
             <th>DATE</th>
             <th>TOTAL</th>
             <th>PAID</th>
@@ -135,7 +135,7 @@ const ProfileScreen = () => {
             <tr key={order._id}>
               <td>{order._id}</td>
               <td>{order.createdAt.substring(0,10)}</td>
-              <td>{order.totalPrice}</td>
+              <td>${order.totalPrice}</td>
               <td>{order.isPaid ? order.paidAt.substring(0,10) : (
                 <i className='fas fa-times' style={{color: 'red'}}></i>
               )}</td>
