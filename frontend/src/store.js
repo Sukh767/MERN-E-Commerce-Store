@@ -2,7 +2,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 // import { thunk } from 'redux-thunk';
 // eslint-disable-next-line
-import { composeWithDevTools } from 'redux-devtools-extension';
+// import { composeWithDevTools } from 'redux-devtools-extension';
 import {
   productListReducers,
   productdetailsReducers,
