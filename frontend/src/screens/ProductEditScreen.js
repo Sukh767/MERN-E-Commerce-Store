@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
@@ -21,7 +22,8 @@ const ProductEditScreen = () => {
   const [rating, setRating] = useState(0);
   const [countInStock, setCountInStock] = useState(0);
   const [numReviews, setNumReviews] = useState(0);
-  const [reviews, setReviews] = useState('');
+  // const [reviews, setReviews] = useState('');
+  const [uploading, setUploading] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -49,30 +51,56 @@ const ProductEditScreen = () => {
         setBrand(product.brand);
         setDescription(product.description);
         setCategory(product.category);
+        console.log('Product rating from backend:', product.rating);
         setRating(product.rating);
         setCountInStock(product.countInStock);
         setNumReviews(product.numReviews);
-        setReviews(product.reviews);
+        //setReviews(product.reviews);
       }
     }
-  }, [dispatch, id, product, navigate,successUpdate]);
+  }, [dispatch, id, product, navigate, successUpdate]);
+
+  const uploadFileHandler = async (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append('image', file);
+    setUploading(true);
+
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      };
+
+      const { data } = await axios.post('/api/upload', formData, config);
+
+      setImage(data);
+      setUploading(false);
+    } catch (error) {
+      console.log(error);
+      setUploading(false);
+    }
+  };
 
   const submitHandler = (e) => {
     e.preventDefault();
     //update product
-    dispatch(updateProduct({
-      _id: id,
-      name,
-      price,
-      image,
-      brand,
-      description,
-      category,
-      rating,
-      countInStock,
-      numReviews,
-      reviews,
-    }))
+    dispatch(
+      updateProduct({
+        _id: id,
+        name,
+        price,
+        image,
+        brand,
+        description,
+        category,
+        rating,
+        countInStock,
+        numReviews,
+        //reviews,
+      })
+    );
   };
 
   return (
@@ -82,8 +110,8 @@ const ProductEditScreen = () => {
       </Link>
       <FormContainer>
         <h1>Edit Product</h1>
-        {loadingUpdate && <Loader/>}
-        {errorUpdate && <Message variant='danger'>{errorUpdate}</Message>}
+        {loadingUpdate && <Loader />}
+        {errorUpdate && <Message variant="danger">{errorUpdate}</Message>}
         {loading ? (
           <Loader />
         ) : error ? (
@@ -111,14 +139,22 @@ const ProductEditScreen = () => {
                 ></Form.Control>
               </Form.Group>
 
-              <Form.Group controlId="image">
+              <Form.Group controlId="image" className="mb-3">
                 <Form.Label>Image</Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="Enter Image url"
+                  placeholder="Enter Image URL"
                   value={image}
                   onChange={(e) => setImage(e.target.value)}
                 ></Form.Control>
+                <Form.Group controlId="image-file">
+                  <Form.Label>Choose File</Form.Label>
+                  <Form.Control
+                    type="file"
+                    onChange={uploadFileHandler}
+                  ></Form.Control>
+                  {uploading && <Loader />}
+                </Form.Group>
               </Form.Group>
 
               <Form.Group controlId="brand">
@@ -151,13 +187,13 @@ const ProductEditScreen = () => {
                 ></Form.Control>
               </Form.Group>
 
-              <Form.Group controlId="rating">
+              <Form.Group controlId="rating" className="mb-3">
                 <Form.Label>Rating</Form.Label>
                 <Form.Control
                   type="number"
                   placeholder="Enter Product rating"
                   value={rating}
-                  onChange={(e) => setRating(e.target.value)}
+                  onChange={(e) => setRating(e.target.value)} // Make sure this is updating the rating value in state
                 ></Form.Control>
               </Form.Group>
 
@@ -181,7 +217,7 @@ const ProductEditScreen = () => {
                 ></Form.Control>
               </Form.Group>
 
-              <Form.Group controlId="reviews">
+              {/* <Form.Group controlId="reviews">
                 <Form.Label>Reviews</Form.Label>
                 <Form.Control
                   type="text"
@@ -189,7 +225,7 @@ const ProductEditScreen = () => {
                   value={reviews}
                   onChange={(e) => setReviews(e.target.value)}
                 ></Form.Control>
-              </Form.Group>
+              </Form.Group> */}
 
               <Button
                 type="submit"
