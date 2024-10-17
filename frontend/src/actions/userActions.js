@@ -128,7 +128,7 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
     };
 
     const { data } = await axios.get(
-      `api/users/${id}`, //passing profile as the id{profile} here
+      `/api/users/${id}`, //passing profile as the id{profile} here
       config
     );
 
@@ -165,7 +165,7 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
     };
 
     const { data } = await axios.put(
-      `api/users/profile`,user, 
+      `/api/users/profile`,user, 
       config
     );
 
