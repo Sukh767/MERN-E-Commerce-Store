@@ -134,4 +134,58 @@ const deleteUser = asyncHandler(async (req, res) => {
 });
 
 
-export { authUser, registerUser, getUserProfile, updateUserProfile, getUsers, deleteUser};
+// @description Get user by ID 
+// @route GET /api/users/:id
+// @access Private/Admin
+const getUserById = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.params.id).select('-password')
+  if(user){
+    res.json(user)
+  }else{
+    throw new Error('User not found');
+  }
+});
+
+
+// @description update user
+// @route PUT /api/users/:id
+// @access Private/Admin
+const updateUser = asyncHandler(async (req, res) => {
+  // Find the user by the ID provided in the request parameters, not the logged-in user ID
+  const user = await User.findById(req.params.id);
+
+  if (user) {
+    const emailExists = await User.findOne({ email: req.body.email });
+
+    // Check if the email is already in use by another user
+    if (emailExists && emailExists._id.toString() !== user._id.toString()) {
+      res.status(400);
+      throw new Error('Email already in use');
+    }
+
+    // Update user fields
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+
+    // Only update isAdmin if it's provided in the request
+    if (typeof req.body.isAdmin !== 'undefined') {
+      user.isAdmin = req.body.isAdmin;
+    }
+
+    const updatedUser = await user.save();
+
+    res.json({
+      _id: updatedUser._id,
+      name: updatedUser.name,
+      email: updatedUser.email,
+      isAdmin: updatedUser.isAdmin,
+    });
+  } else {
+    res.status(404);
+    throw new Error('User not found');
+  }
+});
+
+
+
+export { authUser, registerUser, getUserProfile, updateUserProfile, getUsers, deleteUser, getUserById, updateUser};
