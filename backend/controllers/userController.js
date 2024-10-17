@@ -80,7 +80,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 
 
 // @description update profile
-// @route PUt /api/users/profile
+// @route PUT /api/users/profile
 // @access Private
 const updateUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id)
@@ -108,4 +108,16 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   }
 });
 
-export { authUser,registerUser,getUserProfile, updateUserProfile};
+
+
+// @description Get all users 
+// @route GET /api/users
+// @access Private/Admin
+const getUsers = asyncHandler(async (req, res) => {
+  const users = await User.find({})
+  res.json(users)
+
+ 
+});
+
+export { authUser,registerUser,getUserProfile, updateUserProfile,getUsers};
