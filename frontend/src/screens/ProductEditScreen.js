@@ -5,7 +5,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import FormContainer from '../components/FormContainer';
-import {listProductDetails} from '../actions/productActions'
+import { listProductDetails, updateProduct } from '../actions/productActions';
+import { PRODUCT_UPDATE_RESET } from '../constants/productConstants';
 
 const ProductEditScreen = () => {
   const { id } = useParams();
@@ -18,7 +19,7 @@ const ProductEditScreen = () => {
   const [description, setDescription] = useState('');
   const [category, setCategory] = useState('');
   const [rating, setRating] = useState(0);
-  const [countInstock, setCountInstock] = useState(0);
+  const [countInStock, setCountInStock] = useState(0);
   const [numReviews, setNumReviews] = useState(0);
   const [reviews, setReviews] = useState('');
 
@@ -27,9 +28,18 @@ const ProductEditScreen = () => {
   const productDetails = useSelector((state) => state.productDetails);
   const { loading, error, product } = productDetails;
 
+  const productUpdate = useSelector((state) => state.productUpdate);
+  const {
+    loading: loadingUpdate,
+    error: errorUpdate,
+    success: successUpdate,
+  } = productUpdate;
 
   useEffect(() => {
-    
+    if (successUpdate) {
+      dispatch({ type: PRODUCT_UPDATE_RESET });
+      navigate('/admin/productlist');
+    } else {
       if (!product || !product.name || product._id !== id) {
         dispatch(listProductDetails(id));
       } else {
@@ -40,15 +50,29 @@ const ProductEditScreen = () => {
         setDescription(product.description);
         setCategory(product.category);
         setRating(product.rating);
-        setCountInstock(product.countInstock);
+        setCountInStock(product.countInStock);
         setNumReviews(product.numReviews);
         setReviews(product.reviews);
       }
-  }, [dispatch, id, product, navigate]);
+    }
+  }, [dispatch, id, product, navigate,successUpdate]);
 
   const submitHandler = (e) => {
     e.preventDefault();
     //update product
+    dispatch(updateProduct({
+      _id: id,
+      name,
+      price,
+      image,
+      brand,
+      description,
+      category,
+      rating,
+      countInStock,
+      numReviews,
+      reviews,
+    }))
   };
 
   return (
@@ -58,6 +82,8 @@ const ProductEditScreen = () => {
       </Link>
       <FormContainer>
         <h1>Edit Product</h1>
+        {loadingUpdate && <Loader/>}
+        {errorUpdate && <Message variant='danger'>{errorUpdate}</Message>}
         {loading ? (
           <Loader />
         ) : error ? (
@@ -69,7 +95,7 @@ const ProductEditScreen = () => {
                 <Form.Label>Name</Form.Label>
                 <Form.Control
                   type="name"
-                  placeholder="Enter Your name"
+                  placeholder="Enter product name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                 ></Form.Control>
@@ -86,7 +112,7 @@ const ProductEditScreen = () => {
               </Form.Group>
 
               <Form.Group controlId="image">
-              <Form.Label>Image</Form.Label>
+                <Form.Label>Image</Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Enter Image url"
@@ -96,7 +122,7 @@ const ProductEditScreen = () => {
               </Form.Group>
 
               <Form.Group controlId="brand">
-              <Form.Label>Brand</Form.Label>
+                <Form.Label>Brand</Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Enter Brand Name"
@@ -106,7 +132,7 @@ const ProductEditScreen = () => {
               </Form.Group>
 
               <Form.Group controlId="description">
-              <Form.Label>Description</Form.Label>
+                <Form.Label>Description</Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Enter Product description"
@@ -116,7 +142,7 @@ const ProductEditScreen = () => {
               </Form.Group>
 
               <Form.Group controlId="category">
-              <Form.Label>Category</Form.Label>
+                <Form.Label>Category</Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Enter Product category"
@@ -126,7 +152,7 @@ const ProductEditScreen = () => {
               </Form.Group>
 
               <Form.Group controlId="rating">
-              <Form.Label>Rating</Form.Label>
+                <Form.Label>Rating</Form.Label>
                 <Form.Control
                   type="number"
                   placeholder="Enter Product rating"
@@ -135,28 +161,28 @@ const ProductEditScreen = () => {
                 ></Form.Control>
               </Form.Group>
 
-              <Form.Group controlId="countInstock">
-              <Form.Label>Count In Stock</Form.Label>
+              <Form.Group controlId="countInStock">
+                <Form.Label>Count In Stock</Form.Label>
                 <Form.Control
                   type="number"
                   placeholder="Enter Product stock"
-                  value={countInstock}
-                  onChange={(e) => setCountInstock(e.target.value)}
+                  value={countInStock}
+                  onChange={(e) => setCountInStock(e.target.value)}
                 ></Form.Control>
               </Form.Group>
 
               <Form.Group controlId="numReviews">
-              <Form.Label>Number of Reviews</Form.Label>
+                <Form.Label>Number of Reviews</Form.Label>
                 <Form.Control
                   type="number"
-                  placeholder="Enter Product numReviews"
+                  placeholder="number of reviews"
                   value={numReviews}
                   onChange={(e) => setNumReviews(e.target.value)}
                 ></Form.Control>
               </Form.Group>
 
               <Form.Group controlId="reviews">
-              <Form.Label>Number of Reviews</Form.Label>
+                <Form.Label>Reviews</Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Enter Product Reviews"
