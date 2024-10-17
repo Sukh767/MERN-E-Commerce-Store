@@ -4,6 +4,7 @@ import { configureStore } from '@reduxjs/toolkit';
 // eslint-disable-next-line
 // import { composeWithDevTools } from 'redux-devtools-extension';
 import {
+  productCreateReducers,
   productListReducers,
   productdeleteReducers,
   productdetailsReducers,
@@ -29,6 +30,7 @@ const reducer = {
   productList: productListReducers,
   productDetails: productdetailsReducers,
   productDelete: productdeleteReducers,
+  productCreate: productCreateReducers,
   cart: cartReducer,
   userLogin: userLoginReducers,
   userRegister: userRegisterReducers,
