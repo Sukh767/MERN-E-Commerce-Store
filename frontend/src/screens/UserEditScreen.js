@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import FormContainer from '../components/FormContainer';
-import { getUserDetails } from '../actions/userActions';
+import { getUserDetails, updateUser } from '../actions/userActions';
+import { USER_UPDATE_RESET } from '../constants/userConstants';
 
 const UserEditScreen = () => {
   const { id } = useParams();
-  const location = useLocation();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
@@ -21,32 +21,48 @@ const UserEditScreen = () => {
   const userDetails = useSelector((state) => state.userDetails);
   const { loading, error, user } = userDetails;
 
+  const userUpdate = useSelector((state) => state.userUpdate);
+  const {
+    loading: loadingUpdate,
+    error: errorUpdate,
+    success: successUpdate,
+  } = userUpdate;
+
   useEffect(() => {
-    if (!user || !user.name || user._id !== id) {
-      dispatch(getUserDetails(id));
+    if (successUpdate) {
+      dispatch({ type: USER_UPDATE_RESET });
+      navigate('/admin/userlist');
     } else {
-      setName(user.name);
-      setEmail(user.email);
-      setIsAdmin(user.isAdmin);
+      if (!user || !user.name || user._id !== id) {
+        dispatch(getUserDetails(id));
+      } else {
+        setName(user.name);
+        setEmail(user.email);
+        setIsAdmin(user.isAdmin);
+      }
     }
-  }, [dispatch, user, id]);
+  }, [dispatch, user, id,successUpdate,navigate]);
 
   const submitHandler = (e) => {
     e.preventDefault();
-    // Implement the update functionality here
+    dispatch(updateUser({ _id:id, name, email, isAdmin }));
   };
 
   return (
     <>
-      <Link to='/admin/userlist' className='btn btn-light my-3'>Go Back</Link>
+      <Link to="/admin/userlist" className="btn btn-light my-3">
+        Go Back
+      </Link>
       <FormContainer>
         <h1>Edit User Details</h1>
+        {loadingUpdate && <Loader/>}
+        {errorUpdate && <Message variant='danger'>{errorUpdate}</Message>}
         {loading ? (
           <Loader />
         ) : error ? (
-          <Message variant='danger'>{error}</Message>
+          <Message variant="danger">{error}</Message>
         ) : (
-          user && (  // Add a check to ensure user is defined
+          user && ( // Add a check to ensure user is defined
             <Form onSubmit={submitHandler}>
               <Form.Group controlId="name" className="mb-3">
                 <Form.Label>Name</Form.Label>
@@ -69,11 +85,11 @@ const UserEditScreen = () => {
               </Form.Group>
 
               <Form.Group controlId="isadmin">
-                <Form.Check 
-                  type="checkbox" 
-                  label="Is Admin" 
-                  checked={isAdmin} 
-                  onChange={(e) => setIsAdmin(e.target.checked)}  // Handle the checkbox toggle
+                <Form.Check
+                  type="checkbox"
+                  label="Is Admin"
+                  checked={isAdmin}
+                  onChange={(e) => setIsAdmin(e.target.checked)} // Handle the checkbox toggle
                 />
               </Form.Group>
 
