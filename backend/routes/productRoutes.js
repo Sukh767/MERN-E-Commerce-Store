@@ -1,6 +1,7 @@
 import express from 'express';
 import {
   createProduct,
+  createProductReview,
   deleteProduct,
   getProductById,
   getProducts,
@@ -11,6 +12,7 @@ const router = express.Router();
 
 //By-Pass controller
 router.route('/').get(getProducts).post(protect, admin, createProduct);
+router.route('/:id/reviews').get(getProducts).post(protect,createProductReview);
 router
   .route('/:id')
   .get(getProductById)

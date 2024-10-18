@@ -18,11 +18,8 @@ const ProductEditScreen = () => {
   const [image, setImage] = useState('');
   const [brand, setBrand] = useState('');
   const [description, setDescription] = useState('');
-  const [category, setCategory] = useState('');
-  const [rating, setRating] = useState(0);
-  const [countInStock, setCountInStock] = useState(0);
-  const [numReviews, setNumReviews] = useState(0);
-  // const [reviews, setReviews] = useState('');
+  const [category, setCategory] = useState('')
+  const [countInStock, setCountInStock] = useState(0)
   const [uploading, setUploading] = useState(false);
 
   const dispatch = useDispatch();
@@ -51,10 +48,7 @@ const ProductEditScreen = () => {
         setBrand(product.brand);
         setDescription(product.description);
         setCategory(product.category);
-        setRating(product.rating);
         setCountInStock(product.countInStock);
-        setNumReviews(product.numReviews);
-        //setReviews(product.reviews);
       }
     }
   }, [dispatch, id, product, navigate, successUpdate]);
@@ -94,10 +88,7 @@ const ProductEditScreen = () => {
         brand,
         description,
         category,
-        rating,
         countInStock,
-        numReviews,
-        //reviews,
       })
     );
   };
@@ -186,16 +177,6 @@ const ProductEditScreen = () => {
                 ></Form.Control>
               </Form.Group>
 
-              <Form.Group controlId="rating" className="mb-3">
-                <Form.Label>Rating</Form.Label>
-                <Form.Control
-                  type="number"
-                  placeholder="Enter Product rating"
-                  value={rating}
-                  onChange={(e) => setRating(e.target.value)} // Make sure this is updating the rating value in state
-                ></Form.Control>
-              </Form.Group>
-
               <Form.Group controlId="countInStock">
                 <Form.Label>Count In Stock</Form.Label>
                 <Form.Control
@@ -205,26 +186,6 @@ const ProductEditScreen = () => {
                   onChange={(e) => setCountInStock(e.target.value)}
                 ></Form.Control>
               </Form.Group>
-
-              <Form.Group controlId="numReviews">
-                <Form.Label>Number of Reviews</Form.Label>
-                <Form.Control
-                  type="number"
-                  placeholder="number of reviews"
-                  value={numReviews}
-                  onChange={(e) => setNumReviews(e.target.value)}
-                ></Form.Control>
-              </Form.Group>
-
-              {/* <Form.Group controlId="reviews">
-                <Form.Label>Reviews</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter Product Reviews"
-                  value={reviews}
-                  onChange={(e) => setReviews(e.target.value)}
-                ></Form.Control>
-              </Form.Group> */}
 
               <Button
                 type="submit"
