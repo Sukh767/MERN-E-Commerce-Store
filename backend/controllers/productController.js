@@ -6,19 +6,35 @@ import Product from '../models/productModel.js';
 // @route              GET/api/products
 // @access             Public
 const getProducts = asyncHandler(async (req, res) => {
+  const pageSize = 4;
+  const page = Number(req.query.pageNumber) || 1;
 
-  //can get a query strings if there's a question mark
-  const keyword = req.query.keyword ? {
-    name:{
-      $regex: req.query.keyword,
-      $options: 'i'
-    }
-  } : {}
+  // Build the search keyword object
+  const keyword = req.query.keyword
+    ? {
+        name: {
+          $regex: req.query.keyword,
+          $options: 'i', // Case-insensitive search
+        },
+      }
+    : {};
 
-  const products = await Product.find({ ...keyword });
+  // Get the count of products matching the keyword
+  const count = await Product.countDocuments(keyword);
 
-  res.json(products);
+  // Fetch products with pagination
+  const products = await Product.find(keyword)
+    .limit(pageSize)
+    .skip(pageSize * (page - 1));
+
+  // Return the response
+  res.json({
+    products,
+    page,
+    pages: Math.ceil(count / pageSize), // Total number of pages
+  });
 });
+
 
 // @description       Fetch single product
 // @route             GET /api/products/:id

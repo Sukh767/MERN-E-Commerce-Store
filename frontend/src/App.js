@@ -36,11 +36,15 @@ const App = () => {
             <Route path="/product/:id" Component={ProductScreen} />
             <Route path="/cart/:id?" Component={CartScreen} />
             <Route path='/admin/userlist' Component={UserListScreen}/>
-            <Route path='/admin/productlist' Component={ProductListScreen}/>
+            <Route path='/admin/productlist' Component={ProductListScreen} exact/>
+            <Route path='/admin/productlist/:pageNumber' Component={ProductListScreen} exact/>
             <Route path='/admin/users/:id/edit' Component={UserEditScreen}/>
             <Route path='/admin/product/:id/edit' Component={ProductEditScreen}/>
             <Route path='/admin/orderlist' Component={OrderListScreen}/>
             <Route path="/search/:keyword" Component={HomeScreen} exact />
+            <Route path="/page/:pageNumber" Component={HomeScreen} exact />
+            {/*search, result more than 10, and want pagination */}
+            <Route path="/search/:keyword/page/:pageNumber" Component={HomeScreen} exact />
             <Route path="/" Component={HomeScreen} exact />
           </Routes>
         </Container>
