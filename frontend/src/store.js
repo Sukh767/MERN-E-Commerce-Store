@@ -22,6 +22,7 @@ import {
 } from './reducers/userReducers';
 import {
   orderCreateReducers,
+  orderDeliverReducer,
   orderDetailsReducer,
   orderListMyReducers,
   orderListReducers,
@@ -45,6 +46,7 @@ const reducer = {
   orderCreate: orderCreateReducers,
   orderDetails: orderDetailsReducer,
   orderPay: orderPayReducer,
+  orderDeliver: orderDeliverReducer,
   orderListMy: orderListMyReducers,
   orderList: orderListReducers,
 };
