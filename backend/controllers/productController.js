@@ -6,7 +6,7 @@ import Product from '../models/productModel.js';
 // @route              GET/api/products
 // @access             Public
 const getProducts = asyncHandler(async (req, res) => {
-  const pageSize = 4;
+  const pageSize = 10;
   const page = Number(req.query.pageNumber) || 1;
 
   // Build the search keyword object
@@ -164,11 +164,27 @@ const createProductReview = asyncHandler(async (req, res) => {
   }
 });
 
+
+// @description        Get Top rated Product
+// @route              PUT/api/products/top
+// @access             Public
+const getTopProduct = asyncHandler(async (req, res) => {
+
+  const products = await Product.find({}).sort({rating: -1}).limit(3)
+  if(products){
+    res.json(products)
+  }else{
+    res.status(404);
+    throw new Error('Product not found');
+  }
+});
+
 export {
   getProducts,
   getProductById,
   deleteProduct,
   createProduct,
   updateProduct,
-  createProductReview
+  createProductReview,
+  getTopProduct
 };
