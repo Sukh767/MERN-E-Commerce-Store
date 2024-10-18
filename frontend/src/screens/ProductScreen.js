@@ -10,6 +10,7 @@ import {
   Button,
   Form,
 } from 'react-bootstrap';
+import Meta from '../components/Meta';
 import Rating from '../components/Rating';
 import { listProductDetails,createProductReview } from '../actions/productActions';
 import Message from '../components/Message';
@@ -70,6 +71,7 @@ const ProductScreen = ({ history }) => {
         <Message variant="danger">{error}</Message>
       ) : (
         <>
+        <Meta title={product.name}></Meta>
         <Row>
           <Col md={6}>
             <Image src={product.image} alt={product.name} fluid />
