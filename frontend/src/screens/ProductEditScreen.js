@@ -51,7 +51,6 @@ const ProductEditScreen = () => {
         setBrand(product.brand);
         setDescription(product.description);
         setCategory(product.category);
-        console.log('Product rating from backend:', product.rating);
         setRating(product.rating);
         setCountInStock(product.countInStock);
         setNumReviews(product.numReviews);
