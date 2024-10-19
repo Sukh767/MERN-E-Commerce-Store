@@ -29,6 +29,7 @@
     "react-paypal-button-v2": "^2.6.3"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "concurrently": "^9.0.1",
     "nodemon": "^3.1.7"
   }
